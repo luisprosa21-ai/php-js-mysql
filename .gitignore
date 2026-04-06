@@ -1,0 +1,25 @@
+# PHP
+/vendor/
+composer.lock
+
+# PHPUnit
+tests/.phpunit.result.cache
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker volumes
+mysql_data/
+
+# PHP error logs
+*.log
