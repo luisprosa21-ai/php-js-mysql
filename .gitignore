@@ -2,6 +2,9 @@
 /vendor/
 composer.lock
 
+# PHPUnit
+tests/.phpunit.result.cache
+
 # Environment
 .env
 
