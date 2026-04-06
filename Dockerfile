@@ -11,4 +11,6 @@ COPY . .
 
 RUN if [ -f composer.json ]; then composer install --no-interaction --no-dev 2>/dev/null || true; fi
 
+COPY config/apache.conf /etc/apache2/sites-available/000-default.conf
+
 RUN a2enmod rewrite
