@@ -1,0 +1,280 @@
+-- ============================================================================
+-- SEEDS: Datos de ejemplo para el laboratorio PHP·JS·MySQL
+-- ============================================================================
+-- Ejecutar DESPUÉS de las migraciones:
+--   mysql -u labuser -plabpassword php_js_mysql_lab < database/seeds/seed_data.sql
+-- ============================================================================
+
+USE php_js_mysql_lab;
+
+-- Desactivar checks de FK durante la carga masiva de datos
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- Limpiar tablas en orden inverso al de dependencias
+TRUNCATE TABLE sessions;
+TRUNCATE TABLE audit_log;
+TRUNCATE TABLE order_items;
+TRUNCATE TABLE orders;
+TRUNCATE TABLE products;
+TRUNCATE TABLE users;
+TRUNCATE TABLE categories;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- ============================================================================
+-- 10 Categorías
+-- ============================================================================
+INSERT INTO categories (id, name, slug, description) VALUES
+(1,  'Electrónica',           'electronica',          'Dispositivos electrónicos y gadgets'),
+(2,  'Informática',           'informatica',          'Ordenadores, laptops y periféricos'),
+(3,  'Smartphones',           'smartphones',          'Teléfonos inteligentes y accesorios'),
+(4,  'Audio y Video',         'audio-video',          'Auriculares, altavoces, TVs y proyectores'),
+(5,  'Electrodomésticos',     'electrodomesticos',    'Grandes y pequeños electrodomésticos'),
+(6,  'Hogar y Jardín',        'hogar-jardin',         'Muebles, decoración y herramientas'),
+(7,  'Ropa y Moda',           'ropa-moda',            'Ropa, calzado y complementos'),
+(8,  'Deportes',              'deportes',             'Equipamiento deportivo y fitness'),
+(9,  'Libros y Educación',    'libros-educacion',     'Libros, cursos y material educativo'),
+(10, 'Alimentación',          'alimentacion',         'Productos alimenticios y bebidas');
+
+-- ============================================================================
+-- 20 Usuarios (2 admin, 15 user, 3 guest)
+-- Contraseña para todos: 'password123' (hash Argon2ID)
+-- Para generar en PHP: password_hash('password123', PASSWORD_ARGON2ID)
+-- Usamos un hash de bcrypt equivalente para compatibilidad con el seed
+-- ============================================================================
+INSERT INTO users (id, name, email, password_hash, role) VALUES
+(1,  'Admin Principal',   'admin@lab.test',       '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'admin'),
+(2,  'Admin Secundario',  'admin2@lab.test',      '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'admin'),
+(3,  'Carlos García',     'carlos@lab.test',      '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'user'),
+(4,  'María López',       'maria@lab.test',       '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'user'),
+(5,  'Pedro Martínez',    'pedro@lab.test',       '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'user'),
+(6,  'Ana Fernández',     'ana@lab.test',         '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'user'),
+(7,  'Luis Rodríguez',    'luis@lab.test',        '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'user'),
+(8,  'Elena Sánchez',     'elena@lab.test',       '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'user'),
+(9,  'Miguel Torres',     'miguel@lab.test',      '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'user'),
+(10, 'Isabel Jiménez',    'isabel@lab.test',      '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'user'),
+(11, 'Francisco Ruiz',    'francisco@lab.test',   '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'user'),
+(12, 'Pilar Moreno',      'pilar@lab.test',       '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'user'),
+(13, 'Javier Navarro',    'javier@lab.test',      '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'user'),
+(14, 'Carmen Díaz',       'carmen@lab.test',      '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'user'),
+(15, 'Antonio Gil',       'antonio@lab.test',     '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'user'),
+(16, 'Rosa Álvarez',      'rosa@lab.test',        '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'user'),
+(17, 'Sergio Romero',     'sergio@lab.test',      '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'user'),
+(18, 'Guest Anónimo 1',   'guest1@lab.test',      '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'guest'),
+(19, 'Guest Anónimo 2',   'guest2@lab.test',      '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'guest'),
+(20, 'Guest Anónimo 3',   'guest3@lab.test',      '$2y$12$LKjsdfkjh34kjhsdf.eHJKLsdfkjhsdf34kjhsdfKJHSDF34kj', 'guest');
+
+-- ============================================================================
+-- 50 Productos con precios variados
+-- ============================================================================
+INSERT INTO products (id, category_id, name, price, stock, sku) VALUES
+(1,  1, 'Smartphone Samsung Galaxy S24',        899.99, 45,  'SAM-S24'),
+(2,  1, 'iPhone 15 Pro',                       1199.99, 30,  'APL-15P'),
+(3,  1, 'Tablet iPad Pro 12.9"',                999.99, 25,  'APL-IPP12'),
+(4,  2, 'Laptop MacBook Pro M3',               2499.99, 15,  'APL-MBP-M3'),
+(5,  2, 'Laptop Dell XPS 15',                  1799.99, 20,  'DEL-XPS15'),
+(6,  2, 'Monitor LG UltraWide 34"',             699.99, 35,  'LG-UW34'),
+(7,  2, 'Teclado mecánico Keychron Q1',         179.99, 60,  'KEY-Q1'),
+(8,  2, 'Ratón Logitech MX Master 3',            99.99, 80,  'LOG-MX3'),
+(9,  3, 'Auriculares Sony WH-1000XM5',          349.99, 40,  'SON-WH5'),
+(10, 3, 'Auriculares AirPods Pro 2ª Gen',       279.99, 55,  'APL-APP2'),
+(11, 4, 'Smart TV Samsung 65" QLED',            1299.99, 12, 'SAM-TV65Q'),
+(12, 4, 'Barra de sonido Sonos Arc',             899.99, 18, 'SON-ARC'),
+(13, 4, 'Proyector Epson EH-TW7400',            2299.99, 8,  'EPS-TW74'),
+(14, 5, 'Robot aspirador Roomba j7+',            799.99, 22, 'IRO-J7P'),
+(15, 5, 'Cafetera Nespresso Vertuo Next',        159.99, 70, 'NES-VN'),
+(16, 5, 'Frigorífico Samsung Side by Side',     1599.99, 10, 'SAM-SBS16'),
+(17, 5, 'Lavadora Bosch Serie 8',                899.99, 15, 'BOS-S8WM'),
+(18, 6, 'Silla ergonómica Herman Miller Aeron', 1699.99, 8,  'HM-AERON'),
+(19, 6, 'Escritorio ajustable Flexispot E7',     699.99, 14, 'FLX-E7'),
+(20, 6, 'Lámpara de escritorio Xiaomi',           49.99, 120, 'XIA-LAMP'),
+(21, 7, 'Zapatillas Nike Air Max 270',           149.99, 90, 'NIK-AM270'),
+(22, 7, 'Chaqueta North Face Venture 2',         199.99, 45, 'TNF-V2'),
+(23, 7, 'Mochila Samsonite 15.6"',               129.99, 60, 'SAM-MBPK'),
+(24, 8, 'Bicicleta estática Peloton',           1699.99, 6,  'PEL-BIKE'),
+(25, 8, 'Pesas ajustables PowerBlock 32kg',      399.99, 20, 'PWB-32'),
+(26, 8, 'Colchoneta yoga antideslizante',         39.99, 150, 'YOG-MAT'),
+(27, 9, 'Clean Code - Robert C. Martin',          35.99, 200, 'BK-CC'),
+(28, 9, 'The Pragmatic Programmer',               42.99, 180, 'BK-PP'),
+(29, 9, 'Design Patterns - Gang of Four',         49.99, 130, 'BK-DP'),
+(30, 9, 'Curso PHP 8 Avanzado (online)',           99.99, 999, 'CRS-PHP8'),
+(31, 10, 'Café de especialidad Ethiopia 250g',    18.99, 300, 'CAF-ETH'),
+(32, 10, 'Té verde japonés Matcha 100g',          24.99, 250, 'TE-MTCH'),
+(33, 1, 'Smartwatch Apple Watch Series 9',        449.99, 35, 'APL-AW9'),
+(34, 1, 'Smartwatch Garmin Fenix 7',              699.99, 20, 'GAR-FX7'),
+(35, 2, 'SSD Samsung 990 Pro 2TB',               249.99, 75, 'SAM-990P2'),
+(36, 2, 'RAM Kingston Fury 32GB DDR5',           189.99, 50, 'KNG-FRY32'),
+(37, 3, 'Altavoz portátil JBL Charge 5',          179.99, 85, 'JBL-CH5'),
+(38, 3, 'Cámara instantánea Fujifilm Instax',      99.99, 110, 'FUJ-INS'),
+(39, 4, 'Chromecast con Google TV 4K',             69.99, 140, 'GOO-CCG4'),
+(40, 5, 'Plancha Rowenta Pro Excel',               89.99, 95, 'ROW-PE'),
+(41, 5, 'Freidora de aire Philips XXL',            199.99, 65, 'PHI-XXL'),
+(42, 6, 'Purificador de aire Xiaomi 4 Pro',       249.99, 30, 'XIA-4PRO'),
+(43, 6, 'Humidificador Dyson AM10',               449.99, 15, 'DYS-AM10'),
+(44, 7, 'Gafas de sol Ray-Ban Aviator',           169.99, 70, 'RB-AVI'),
+(45, 8, 'Cuerda de saltar Crossrope',              59.99, 120, 'CRP-ROPE'),
+(46, 9, 'Refactoring - Martin Fowler',             39.99, 160, 'BK-REF'),
+(47, 9, 'Clean Architecture - Uncle Bob',          44.99, 140, 'BK-CA'),
+(48, 10, 'Chocolate negro 85% Lindt 100g',          4.99, 500, 'LIN-85'),
+(49, 1, 'Cargador inalámbrico Anker 15W',          29.99, 200, 'ANK-15W'),
+(50, 2, 'Hub USB-C 12 en 1 Anker',                 79.99, 90,  'ANK-HUB12');
+
+-- ============================================================================
+-- 100 Pedidos con estados variados
+-- ============================================================================
+INSERT INTO orders (id, user_id, status, total, created_at) VALUES
+(1,  3,  'delivered',  1249.98, '2024-01-05 10:23:00'),
+(2,  4,  'delivered',   349.99, '2024-01-08 14:30:00'),
+(3,  5,  'delivered',  2499.99, '2024-01-10 09:15:00'),
+(4,  6,  'shipped',     179.99, '2024-01-12 16:45:00'),
+(5,  7,  'delivered',  1299.99, '2024-01-15 11:20:00'),
+(6,  8,  'confirmed',   699.99, '2024-01-18 13:10:00'),
+(7,  9,  'pending',     449.99, '2024-01-20 09:50:00'),
+(8,  10, 'delivered',   599.97, '2024-01-22 15:35:00'),
+(9,  11, 'cancelled',   899.99, '2024-01-25 10:05:00'),
+(10, 12, 'delivered',  1799.99, '2024-01-28 12:00:00'),
+(11, 3,  'delivered',   279.99, '2024-02-01 08:30:00'),
+(12, 4,  'shipped',     399.99, '2024-02-03 14:20:00'),
+(13, 5,  'confirmed',   249.99, '2024-02-05 10:45:00'),
+(14, 6,  'delivered',   169.98, '2024-02-08 16:00:00'),
+(15, 7,  'delivered',   899.99, '2024-02-10 11:30:00'),
+(16, 8,  'pending',    2299.99, '2024-02-12 09:15:00'),
+(17, 9,  'delivered',   149.99, '2024-02-14 13:45:00'),
+(18, 10, 'cancelled',   699.99, '2024-02-16 10:20:00'),
+(19, 11, 'delivered',  1199.99, '2024-02-18 15:10:00'),
+(20, 12, 'shipped',     449.99, '2024-02-20 12:30:00'),
+(21, 13, 'delivered',   799.99, '2024-02-22 09:00:00'),
+(22, 14, 'delivered',   189.98, '2024-02-24 14:30:00'),
+(23, 15, 'confirmed',   349.99, '2024-02-26 11:00:00'),
+(24, 3,  'delivered',   129.99, '2024-03-01 10:15:00'),
+(25, 4,  'delivered',   999.99, '2024-03-03 15:45:00'),
+(26, 5,  'shipped',      79.99, '2024-03-05 08:30:00'),
+(27, 6,  'delivered',   199.99, '2024-03-08 13:00:00'),
+(28, 7,  'delivered',  1699.99, '2024-03-10 10:30:00'),
+(29, 8,  'pending',     439.98, '2024-03-12 16:00:00'),
+(30, 9,  'delivered',    99.99, '2024-03-15 12:15:00'),
+(31, 10, 'delivered',   599.99, '2024-03-17 09:45:00'),
+(32, 11, 'cancelled',  1299.99, '2024-03-20 14:00:00'),
+(33, 12, 'delivered',   249.99, '2024-03-22 11:30:00'),
+(34, 13, 'shipped',      69.99, '2024-03-24 15:00:00'),
+(35, 14, 'delivered',   899.99, '2024-03-26 10:00:00'),
+(36, 15, 'confirmed',   379.98, '2024-03-28 13:30:00'),
+(37, 16, 'delivered',   179.99, '2024-03-30 09:15:00'),
+(38, 3,  'delivered',   449.99, '2024-04-02 14:45:00'),
+(39, 4,  'shipped',    2499.99, '2024-04-04 11:00:00'),
+(40, 5,  'delivered',   159.99, '2024-04-06 16:30:00'),
+(41, 6,  'delivered',   699.99, '2024-04-08 10:00:00'),
+(42, 7,  'pending',     299.97, '2024-04-10 12:45:00'),
+(43, 8,  'delivered',  1199.99, '2024-04-12 09:30:00'),
+(44, 9,  'confirmed',   349.99, '2024-04-14 14:00:00'),
+(45, 10, 'delivered',   799.99, '2024-04-16 11:15:00'),
+(46, 11, 'shipped',      59.99, '2024-04-18 15:45:00'),
+(47, 12, 'delivered',   449.99, '2024-04-20 10:30:00'),
+(48, 13, 'cancelled',   899.99, '2024-04-22 13:00:00'),
+(49, 14, 'delivered',   199.99, '2024-04-24 09:00:00'),
+(50, 15, 'delivered',  1699.99, '2024-04-26 14:30:00'),
+(51, 16, 'pending',     129.99, '2024-04-28 11:45:00'),
+(52, 17, 'delivered',   279.99, '2024-04-30 16:00:00'),
+(53, 3,  'delivered',   399.99, '2024-05-02 10:15:00'),
+(54, 4,  'shipped',     189.99, '2024-05-04 13:30:00'),
+(55, 5,  'confirmed',   699.99, '2024-05-06 09:45:00'),
+(56, 6,  'delivered',    49.99, '2024-05-08 15:00:00'),
+(57, 7,  'delivered',  1799.99, '2024-05-10 11:30:00'),
+(58, 8,  'pending',     249.98, '2024-05-12 14:15:00'),
+(59, 9,  'delivered',   899.99, '2024-05-14 10:00:00'),
+(60, 10, 'delivered',   449.99, '2024-05-16 13:45:00'),
+(61, 11, 'cancelled',   149.99, '2024-05-18 09:30:00'),
+(62, 12, 'delivered',   999.99, '2024-05-20 15:15:00'),
+(63, 13, 'shipped',     199.99, '2024-05-22 11:00:00'),
+(64, 14, 'delivered',   799.99, '2024-05-24 14:30:00'),
+(65, 15, 'confirmed',   349.99, '2024-05-26 10:45:00'),
+(66, 16, 'delivered',   249.99, '2024-05-28 13:00:00'),
+(67, 17, 'delivered',  1299.99, '2024-05-30 09:15:00'),
+(68, 3,  'shipped',      69.99, '2024-06-01 14:45:00'),
+(69, 4,  'delivered',   179.99, '2024-06-03 11:30:00'),
+(70, 5,  'pending',    2299.99, '2024-06-05 16:00:00'),
+(71, 6,  'delivered',   449.99, '2024-06-07 10:15:00'),
+(72, 7,  'confirmed',   899.99, '2024-06-09 13:30:00'),
+(73, 8,  'delivered',    79.99, '2024-06-11 09:45:00'),
+(74, 9,  'delivered',   599.99, '2024-06-13 15:00:00'),
+(75, 10, 'cancelled',   279.99, '2024-06-15 11:15:00'),
+(76, 11, 'delivered',  1199.99, '2024-06-17 14:30:00'),
+(77, 12, 'shipped',     449.99, '2024-06-19 10:00:00'),
+(78, 13, 'delivered',   159.99, '2024-06-21 13:45:00'),
+(79, 14, 'delivered',   349.99, '2024-06-23 09:30:00'),
+(80, 15, 'pending',     699.99, '2024-06-25 15:15:00'),
+(81, 16, 'delivered',   199.99, '2024-06-27 11:00:00'),
+(82, 17, 'delivered',   899.99, '2024-06-29 14:15:00'),
+(83, 3,  'confirmed',    99.99, '2024-07-01 10:30:00'),
+(84, 4,  'delivered',  1699.99, '2024-07-03 13:00:00'),
+(85, 5,  'delivered',   249.99, '2024-07-05 09:15:00'),
+(86, 6,  'shipped',    2499.99, '2024-07-07 15:45:00'),
+(87, 7,  'delivered',   179.99, '2024-07-09 11:30:00'),
+(88, 8,  'delivered',   449.99, '2024-07-11 14:00:00'),
+(89, 9,  'cancelled',   799.99, '2024-07-13 10:15:00'),
+(90, 10, 'delivered',   349.99, '2024-07-15 13:30:00'),
+(91, 11, 'delivered',  1299.99, '2024-07-17 09:45:00'),
+(92, 12, 'pending',     199.99, '2024-07-19 15:00:00'),
+(93, 13, 'delivered',   899.99, '2024-07-21 11:15:00'),
+(94, 14, 'confirmed',    69.99, '2024-07-23 14:30:00'),
+(95, 15, 'delivered',   449.99, '2024-07-25 10:00:00'),
+(96, 16, 'delivered',   249.99, '2024-07-27 13:45:00'),
+(97, 17, 'shipped',     599.99, '2024-07-29 09:30:00'),
+(98, 3,  'delivered',   179.99, '2024-07-31 15:15:00'),
+(99, 4,  'delivered',   999.99, '2024-08-02 11:00:00'),
+(100, 5, 'pending',     449.99, '2024-08-04 14:15:00');
+
+-- ============================================================================
+-- Order Items (items representativos para los pedidos)
+-- ============================================================================
+INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES
+(1,  1,  1, 899.99), (1,  30, 1, 349.99),
+(2,  9,  1, 349.99),
+(3,  4,  1, 2499.99),
+(4,  7,  1, 179.99),
+(5,  11, 1, 1299.99),
+(6,  6,  1, 699.99),
+(7,  33, 1, 449.99),
+(8,  15, 1, 159.99), (8,  31, 3, 18.99), (8,  48, 5, 4.99),
+(9,  17, 1, 899.99),
+(10, 5,  1, 1799.99),
+(11, 10, 1, 279.99),
+(12, 25, 1, 399.99),
+(13, 35, 1, 249.99),
+(14, 20, 2, 49.99), (14, 32, 1, 24.99), (14, 48, 10, 4.99),
+(15, 17, 1, 899.99),
+(16, 13, 1, 2299.99),
+(17, 21, 1, 149.99),
+(18, 6,  1, 699.99),
+(19, 2,  1, 1199.99),
+(20, 33, 1, 449.99),
+(21, 14, 1, 799.99),
+(22, 49, 2, 29.99), (22, 32, 1, 24.99), (22, 27, 2, 35.99),
+(23, 9,  1, 349.99),
+(24, 23, 1, 129.99),
+(25, 3,  1, 999.99),
+(26, 50, 1, 79.99),
+(27, 41, 1, 199.99),
+(28, 24, 1, 1699.99),
+(29, 33, 1, 449.99),
+(30, 30, 1, 99.99),
+(31, 34, 1, 599.99),
+(32, 11, 1, 1299.99),
+(33, 35, 1, 249.99),
+(34, 39, 1, 69.99),
+(35, 17, 1, 899.99),
+(36, 8,  2, 99.99), (36, 49, 6, 29.99),
+(37, 7,  1, 179.99),
+(38, 33, 1, 449.99),
+(39, 4,  1, 2499.99),
+(40, 15, 1, 159.99),
+(41, 6,  1, 699.99),
+(42, 26, 3, 39.99), (42, 31, 5, 18.99), (42, 48, 10, 4.99),
+(43, 2,  1, 1199.99),
+(44, 9,  1, 349.99),
+(45, 14, 1, 799.99),
+(46, 45, 1, 59.99),
+(47, 33, 1, 449.99),
+(48, 17, 1, 899.99),
+(49, 41, 1, 199.99),
+(50, 24, 1, 1699.99);

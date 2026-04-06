@@ -1,0 +1,25 @@
+{
+    "name": "luisprosa21/php-js-mysql-lab",
+    "description": "Laboratorio educativo interactivo PHP, JavaScript y MySQL",
+    "type": "project",
+    "require": {
+        "php": "^8.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lab\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lab\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --configuration tests/phpunit.xml",
+        "labs": "php scripts/run_labs.php"
+    }
+}
