@@ -18,6 +18,7 @@ services:
 
   db:
     image: mysql:8.0
+    command: --general-log=1 --general-log-file=/var/lib/mysql/general.log
     ports:
       - "3306:3306"
     environment:
@@ -27,7 +28,8 @@ services:
       MYSQL_PASSWORD: labpassword
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./database/migrations:/docker-entrypoint-initdb.d
+      - ./database/migrations/001_create_tables.sql:/docker-entrypoint-initdb.d/001_create_tables.sql
+      - ./database/seeds/seed_data.sql:/docker-entrypoint-initdb.d/002_seed_data.sql
 
   phpmyadmin:
     image: phpmyadmin:latest
