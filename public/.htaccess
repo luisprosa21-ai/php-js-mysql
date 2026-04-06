@@ -1,0 +1,12 @@
+Options -Indexes
+
+RewriteEngine On
+
+# Route /api.php/* cleanly (PATH_INFO already handled by Apache, no rewrite needed)
+
+# Serve existing files and directories directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Everything else → index.php
+RewriteRule ^ index.php [L]

@@ -23,8 +23,7 @@ WORKDIR /var/www/html
 # 5. Copiamos los archivos del proyecto
 COPY . .
 
-# 6. Instalamos dependencias de PHP si existe composer.json
-RUN if [ -f composer.json ]; then composer install --no-interaction --no-dev; fi
+RUN if [ -f composer.json ]; then composer install --no-interaction --no-dev 2>/dev/null || true; fi
 
 # 7. Habilitamos el módulo de reescritura de Apache (útil para frameworks)
 RUN a2enmod rewrite
