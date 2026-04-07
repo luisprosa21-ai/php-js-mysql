@@ -15,6 +15,9 @@ RUN docker-php-ext-install pdo pdo_mysql mbstring opcache
 # 3. Instalamos Xdebug
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
+# 3b. Configuración de Xdebug para depuración remota desde VSCode
+COPY config/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
 # 4. Traemos Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

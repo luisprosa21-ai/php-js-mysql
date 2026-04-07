@@ -5,8 +5,11 @@ services:
     build: .
     ports:
       - "8000:80"
+      - "9003:9003"
     volumes:
       - ".:/var/www/html"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - db
     environment:
